@@ -30,6 +30,7 @@ const DEFAULTS: Settings = {
   notifyEnabled: true,
   notifyLeadMin: 10,
   notifyMorning: true,
+  notifySound: 'default',
   closeToTray: true,
   launchAtLogin: false,
   ritualsEnabled: true,
@@ -56,6 +57,7 @@ export function getSettings(): Settings {
 
 export function updateSettings(patch: Partial<Settings>): Settings {
   if (patch.theme && !['dark', 'light', 'system'].includes(patch.theme)) throw new Error('Geçersiz tema')
+  if (patch.notifySound && !['default', 'chime', 'soft', 'none'].includes(patch.notifySound)) throw new Error('Geçersiz bildirim sesi')
   for (const key of ['dayStart', 'dayEnd'] as const) {
     const v = patch[key]
     if (v !== undefined && !TIME.test(v)) throw new Error('Saat SS:dd formatında olmalı')

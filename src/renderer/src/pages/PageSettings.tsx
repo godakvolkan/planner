@@ -274,6 +274,32 @@ export function PageSettings(): React.JSX.Element {
               </div>
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border px-4 py-3 md:col-span-2">
                 <div>
+                  <div className="text-[13.5px] font-medium">Bildirim Sesi</div>
+                  <div className="text-[12px] text-muted-foreground">Masaüstü bildirimleri için çalınacak ses</div>
+                </div>
+                <div className="flex gap-1.5">
+                  {[
+                    { id: 'default', label: 'Varsayılan' },
+                    { id: 'chime', label: 'Zil' },
+                    { id: 'soft', label: 'Yumuşak' },
+                    { id: 'none', label: 'Sessiz' }
+                  ].map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => save({ notifySound: s.id as any })}
+                      className={cn(
+                        'h-8 rounded-lg border px-3 text-[12.5px] font-medium transition-colors',
+                        settings.notifySound === s.id ? 'border-ring/50 bg-primary/15 text-primary' : 'text-muted-foreground hover:text-foreground'
+                      )}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border px-4 py-3 md:col-span-2">
+                <div>
                   <div className="text-[13.5px] font-medium">Ne kadar önce hatırlatsın?</div>
                   <div className="text-[12px] text-muted-foreground">Başlangıç anında da ayrıca bildirim gelir</div>
                 </div>

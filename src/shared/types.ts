@@ -198,6 +198,7 @@ export interface RecurrenceInput {
 }
 
 export type ThemeMode = 'dark' | 'light' | 'system'
+export type NotifySound = 'default' | 'chime' | 'soft' | 'none'
 
 export interface Settings {
   userName: string
@@ -211,6 +212,8 @@ export interface Settings {
   notifyLeadMin: number
   /** Gün başında günün özeti */
   notifyMorning: boolean
+  /** Bildirim Sesi */
+  notifySound: NotifySound
   /** Pencere kapatılınca tepsiye küçül (bildirimler ve kısayol çalışmaya devam eder) */
   closeToTray: boolean
   /** Windows açılınca başlat */
@@ -525,4 +528,5 @@ export interface IElectronAPI {
   }
   /** main tarafında veri değişince (ör. gece yarısı tekrar görevleri üretildi) tetiklenir. Abonelikten çıkış fonksiyonu döner. */
   onDataChanged(callback: () => void): () => void
+  onNotifySound(callback: (sound: NotifySound) => void): () => void
 }

@@ -45,6 +45,38 @@ function ThemedToaster(): React.JSX.Element {
   return <Toaster position="bottom-right" theme={settings.theme} richColors={false} closeButton />
 }
 
+function NotificationSoundPlayer(): null {
+  React.useEffect(() => {
+    return window.api.onNotifySound((sound) => {
+      try {
+        const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+        const ctx = new Ctx()
+        
+        let notes: number[] = []
+        if (sound === 'chime') notes = [523.25, 659.25]
+        else if (sound === 'soft') notes = [440.0]
+        else return
+
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          osc.type = sound === 'soft' ? 'sine' : 'triangle'
+          osc.frequency.value = freq
+          const t = ctx.currentTime + i * 0.15
+          gain.gain.setValueAtTime(0, t)
+          gain.gain.linearRampToValueAtTime(0.1, t + 0.02)
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6)
+          osc.connect(gain).connect(ctx.destination)
+          osc.start(t)
+          osc.stop(t + 1)
+        })
+        setTimeout(() => ctx.close(), 2000)
+      } catch {}
+    })
+  }, [])
+  return null
+}
+
 /** Giriş yapılmış profilin uygulaması; profil değişince tamamen yeniden kurulur (hiçbir durum taşınmaz) */
 function MainApp(): React.JSX.Element {
   return (
@@ -75,6 +107,7 @@ function MainApp(): React.JSX.Element {
             <PostponeDialog />
             <TitleBarSync />
             <ThemedToaster />
+            <NotificationSoundPlayer />
           </PomodoroProvider>
         </AppProvider>
       </TooltipProvider>

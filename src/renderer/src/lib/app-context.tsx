@@ -63,6 +63,7 @@ const DEFAULT_SETTINGS: Settings = {
   notifyEnabled: true,
   notifyLeadMin: 10,
   notifyMorning: true,
+  notifySound: 'default',
   closeToTray: true,
   launchAtLogin: false,
   ritualsEnabled: true,

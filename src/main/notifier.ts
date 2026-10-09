@@ -39,9 +39,16 @@ function focusWindow(route: string, taskId: number | null): void {
 
 export function notify(title: string, body: string, route = '/', taskId: number | null = null): boolean {
   if (!Notification.isSupported()) return false
-  const n = new Notification({ title, body, icon: ICON(), silent: false })
+  const s = getSettings()
+  const silent = s.notifySound !== 'default'
+  const n = new Notification({ title, body, icon: ICON(), silent })
   n.on('click', () => focusWindow(route, taskId))
   n.show()
+  
+  if (silent && s.notifySound !== 'none') {
+    const win = BrowserWindow.getAllWindows()[0]
+    if (win) win.webContents.send('notify:sound', s.notifySound)
+  }
   return true
 }
 

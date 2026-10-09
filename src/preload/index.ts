@@ -154,6 +154,11 @@ const api: IElectronAPI = {
     return () => {
       dataListeners.delete(callback)
     }
+  },
+  onNotifySound: (callback) => {
+    const listener = (_e: any, sound: string) => callback(sound as any)
+    ipcRenderer.on('notify:sound', listener)
+    return () => ipcRenderer.removeListener('notify:sound', listener)
   }
 } as IElectronAPI
 
