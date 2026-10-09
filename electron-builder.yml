@@ -1,0 +1,41 @@
+appId: com.controlcenter.app
+productName: Control Center
+copyright: Copyright © 2026 Volkan
+
+directories:
+  buildResources: build
+  output: dist
+
+# Sadece derlenmiş çıktı ve gerekli kaynaklar pakete girer
+files:
+  - out/**
+  - resources/**
+  - package.json
+  - "!**/*.map"
+
+# Bildirim simgesi Windows'ta gerçek bir dosya yolu ister; better-sqlite3'ün yerel modülü asar içinden yüklenemez
+asarUnpack:
+  - resources/**
+  - "**/*.node"
+
+# better-sqlite3 "npm install" sırasında (postinstall) zaten Electron için derleniyor
+npmRebuild: false
+
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: build/icon.ico
+  artifactName: Control-Center-Setup-${version}.${ext}
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Control Center
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  # Kaldırınca kullanıcı verisi (görevler, yedekler) silinmez
+  deleteAppDataOnUninstall: false
