@@ -16,8 +16,8 @@ describe('bağlam', () => {
     expect(filterByContext(list, 'phone')).toHaveLength(2)
   })
   it('hızlı eklemede @bağlam', () => {
-    const areas = [{ name: 'Deneyap' }]
-    expect(parseQuickAdd('Deneyap grubuna mesaj @telefon', areas).context).toBe('phone')
+    const areas = [{ name: 'Grup' }]
+    expect(parseQuickAdd('Grup sohbetine mesaj @telefon', areas).context).toBe('phone')
     expect(parseQuickAdd('rapor yaz @bilgisayar 2 saat', areas)).toMatchObject({ context: 'computer', title: 'Rapor yaz', estimateMin: 120 })
     expect(parseQuickAdd('market listesi', areas).context).toBeNull()
   })

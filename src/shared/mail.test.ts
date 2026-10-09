@@ -4,7 +4,7 @@ import { detectProvider, gmailLink, messageKey, searchSince, taskFromMail, type 
 const env: MailEnvelope = {
   uid: 42,
   messageId: '<CAB123@mail.gmail.com>',
-  subject: '  TÜBİTAK   ara rapor  teslimi ',
+  subject: '  Proje   ara rapor  teslimi ',
   fromName: 'Danışman Hoca',
   fromAddress: 'hoca@uni.edu.tr',
   date: '2026-10-08T09:30:00.000Z'
@@ -25,7 +25,7 @@ describe('detectProvider', () => {
 describe('taskFromMail', () => {
   it('konu başlık olur, gönderen notta, Inbox’a düşer', () => {
     const t = taskFromMail(env, 'gmail', 4)
-    expect(t.title).toBe('TÜBİTAK ara rapor teslimi')
+    expect(t.title).toBe('Proje ara rapor teslimi')
     expect(t.status).toBe('inbox')
     expect(t.areaId).toBe(4)
     expect(t.notes).toContain('Danışman Hoca <hoca@uni.edu.tr>')

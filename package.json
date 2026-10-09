@@ -2,7 +2,7 @@
   "name": "control-center",
   "version": "1.0.0",
   "main": "./out/main/index.js",
-  "author": "Volkan",
+  "author": "Developer",
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",

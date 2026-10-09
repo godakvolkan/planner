@@ -4,7 +4,7 @@ import { CONTEXTS } from './context'
 
 /**
  * Tek satırlık Türkçe görev girişini ayrıştırır.
- *   "yarın 14:00 TÜBİTAK raporu 2 saat"  → başlık, tarih, saat, süre, alan
+ *   "yarın 14:00 proje raporu 2 saat"  → başlık, tarih, saat, süre, alan
  *   "cuma ödev 45dk #üniversite !!"      → alan etiketi ve öncelik
  */
 export interface ParsedQuickAdd {
@@ -45,7 +45,7 @@ const AREA_KEYWORDS: Record<string, string[]> = {
 
 const trLower = (s: string): string => s.toLocaleLowerCase('tr-TR')
 
-/** Türkçe karakterleri sadeleştirir: aramada "tubitak" = "TÜBİTAK" */
+/** Türkçe karakterleri sadeleştirir: aramada "calisma" = "ÇALIŞMA" */
 export function fold(s: string): string {
   return trLower(s)
     .replace(/ı/g, 'i')

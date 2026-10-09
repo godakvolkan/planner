@@ -7,7 +7,7 @@
 <p align="center"><b>Todo Manager değil, Personal Planning Engine.</b><br/>
 Aklında tutma. Planına bırak.</p>
 
-Üniversite, yazılım projeleri, Deneyap, TÜBİTAK, kariyer ve kişisel işler arasında kaybolmamak için yapılmış bir masaüstü planlama uygulaması. Görevleri listelemek yerine tek bir soruyu cevaplar: **"Şu anda ne yapmalıyım?"**
+Üniversite, yazılım projeleri, okul projeleri, takım çalışmaları, kariyer ve kişisel işler arasında kaybolmamak için yapılmış bir masaüstü planlama uygulaması. Görevleri listelemek yerine tek bir soruyu cevaplar: **"Şu anda ne yapmalıyım?"**
 
 ![Şimdi ekranı](docs/screenshots/now-dark.png)
 
@@ -16,7 +16,7 @@ Aklında tutma. Planına bırak.</p>
 - **"Şimdi ne?" motoru:** Çalışan oturum → saati gelmiş blok → Bugünün 3'ü → teslimi yakın → öncelik sırasıyla tek bir görevi öne çıkarır, ilk fiziksel adımıyla birlikte.
 - **Gerçekçi kapasite:** Her gün için ayrı kapasite; ders programındaki saatler otomatik düşülür. Plan aşılırsa **Günü dengele** neyin yarına taşınabileceğini önerir. Hiçbir şeyi sormadan taşımaz.
 - **Tahmin ve gerçek:** Focus oturumları gerçek süreyi ölçer. Analiz ekranı tahmin alışkanlığını gösterir ("işlerin genelde %30 uzun sürüyor").
-- **Türkçe doğal dil:** `yarın 14:00 TÜBİTAK raporu 2 saat !!` yazınca tarih, saat, süre, öncelik ve alan otomatik ayrışır. `ödev` yazınca alanı Üniversite, `github` yazınca Yazılım olur.
+- **Türkçe doğal dil:** `yarın 14:00 proje raporu 2 saat !!` yazınca tarih, saat, süre, öncelik ve alan otomatik ayrışır. `ödev` yazınca alanı Üniversite, `github` yazınca Yazılım olur.
 - **Nerede olduğunu bilir:** Kenar çubuğunda her an "Şu an · Derstesin: Veri Yapıları · B-204 · 11:00'e kadar" ve "Sırada" görünür.
 
 ## Özellikler

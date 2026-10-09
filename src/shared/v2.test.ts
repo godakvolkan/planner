@@ -37,11 +37,11 @@ describe('fitToTime (Kaç dakikam var?)', () => {
   })
 
   it('2 saatte büyük ve önemli işi de alır', () => {
-    const big = task({ title: 'TÜBİTAK', estimateMin: 60, priority: 4 })
+    const big = task({ title: 'Dönem Projesi', estimateMin: 60, priority: 4 })
     const mid = task({ title: 'kodlama', estimateMin: 45, priority: 3 })
     const mail = task({ title: 'mail', estimateMin: 15 })
     const plan = fitToTime([mail, mid, big], 120, ctx)
-    expect(plan.tasks.map((t) => t.title)).toEqual(['TÜBİTAK', 'kodlama', 'mail'])
+    expect(plan.tasks.map((t) => t.title)).toEqual(['Dönem Projesi', 'kodlama', 'mail'])
     expect(plan.totalMin).toBe(120)
   })
 
@@ -72,7 +72,7 @@ describe('enerji', () => {
 
 describe('suggestBreakdown', () => {
   it('rapor şablonu, toplam süre korunur (±5 dk)', () => {
-    const steps = suggestBreakdown('TÜBİTAK 2209 sonuç raporu', 180)
+    const steps = suggestBreakdown('Dönem sonu bitirme raporu', 180)
     expect(steps[0].title).toMatch(/Kaynak/)
     const total = steps.reduce((a, s) => a + s.estimateMin, 0)
     expect(Math.abs(total - 180)).toBeLessThanOrEqual(10)

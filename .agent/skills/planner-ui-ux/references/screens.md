@@ -9,7 +9,7 @@ Her taslak bir yerleşim fikridir, birebir piksel değildir. Görsel değerler i
 
 ```
 Çarşamba · 7 Ekim
-İyi akşamlar, Volkan.
+İyi akşamlar.
 
 ŞİMDİ
 TÜBİTAK Sonuç Raporu                       ← ekrandaki en büyük metin

@@ -26,7 +26,7 @@ export function openDatabase(path: string): Database.Database {
   closeDatabase()
   const conn = new Database(path)
   conn.pragma('journal_mode = WAL')
-  // Arama dizini Türkçe karakterleri sadeleştirerek tutulur ("tubitak" = "TÜBİTAK").
+  // Arama dizini Türkçe karakterleri sadeleştirerek tutulur ("calisma" = "ÇALIŞMA").
   // FTS tetikleyicileri bu fonksiyonu kullandığı için migration'lardan önce tanımlanmalı.
   conn.function('cc_fold', { deterministic: true }, (value: unknown) => (typeof value === 'string' ? fold(value) : ''))
   runMigrations(conn)

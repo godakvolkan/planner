@@ -100,7 +100,7 @@ export function QuickAdd({ defaultDate, placeholder, className }: QuickAddProps)
               e.currentTarget.blur()
             }
           }}
-          placeholder={placeholder ?? 'Ne yapman gerekiyor?  örn. "yarın 14:00 TÜBİTAK raporu 2 saat"'}
+          placeholder={placeholder ?? 'Ne yapman gerekiyor?  örn. "yarın 14:00 proje raporu 2 saat"'}
           className="h-12 flex-1 bg-transparent text-[14.5px] outline-none placeholder:text-muted-foreground/70"
         />
         {value ? (

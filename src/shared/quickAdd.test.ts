@@ -82,7 +82,7 @@ describe('parseQuickAdd', () => {
 
 describe('fold', () => {
   it('Türkçe karakterleri sadeleştirir', () => {
-    expect(fold('TÜBİTAK')).toBe('tubitak')
+    expect(fold('ÇALIŞMA')).toBe('calisma')
     expect(fold('Çarşamba Işık Göğüs')).toBe('carsamba isik gogus')
   })
 })
