@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useLocation } from 'react-router-dom'
-import { Timer, Archive, Bell, Repeat, Pause, Play, Trash2, Download, FolderOpen, Keyboard, Laptop, Monitor, Moon, RotateCcw, Sun, Upload, User, Clock3, Database, Mail, Flame } from 'lucide-react'
+import { Timer, Archive, Bell, Repeat, Pause, Play, Trash2, Download, FolderOpen, Keyboard, Laptop, Monitor, Moon, RotateCcw, Sun, Upload, User, Clock3, Database, Mail, Flame, Cloud } from 'lucide-react'
 import { toast } from 'sonner'
 import type { BackupInfo, ThemeMode } from '../../../shared/types'
 import { Page } from '@/components/common/Page'
@@ -10,6 +10,7 @@ import { Toggle } from '@/components/common/Toggle'
 import { KeyCombo } from '@/components/common/KeyCombo'
 import { KeybindingsEditor } from '@/components/settings/KeybindingsEditor'
 import { ProfileSecurity } from '@/components/settings/ProfileSecurity'
+import { MailAccounts } from '@/components/settings/MailAccounts'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useApp } from '@/lib/app-context'
 import { refreshAll, useData } from '@/lib/data'
@@ -51,7 +52,6 @@ const THEMES: { id: ThemeMode; label: string; icon: React.ElementType; preview: 
 export function PageSettings(): React.JSX.Element {
   const { settings, updateSettings, bindings } = useApp()
   const [name, setName] = React.useState(settings.userName)
-  const [syncing, setSyncing] = React.useState(false)
   const [tab, setTab] = React.useState<TabId>('general')
   React.useEffect(() => setName(settings.userName), [settings.userName])
 
@@ -203,33 +203,9 @@ export function PageSettings(): React.JSX.Element {
             </div>
           </div>
         </Card>
-            <Card icon={Mail} title="E-Posta" description="Önemli e-postaları doğrudan Inbox'a düşürün.">
-          <div className="flex flex-col gap-3">
-            <div className="text-[13px] text-muted-foreground">
-              Demo Modu: Gerçek bir hesap bağlamak yerine sahte e-postalarla senkronizasyonu test edebilirsiniz.
-            </div>
-            <div>
-              <Button
-                variant="outline"
-                className="gap-2"
-                disabled={syncing}
-                onClick={async () => {
-                  setSyncing(true)
-                  try {
-                    const res = await window.api.mail.sync()
-                    toast.success(`${res.added} yeni e-posta Inbox'a eklendi`)
-                  } catch {
-                    toast.error('Senkronizasyon başarısız.')
-                  } finally {
-                    setSyncing(false)
-                  }
-                }}
-              >
-                <Mail className="size-4" /> {syncing ? 'Senkronize ediliyor...' : 'Şimdi senkronize et'}
-              </Button>
-            </div>
-          </div>
-        </Card>
+            <Card icon={Mail} title="E-Posta" description="Yıldızladığın (ya da seçtiğin) e-postalar Inbox'a görev olarak düşsün.">
+              <MailAccounts />
+            </Card>
           </>
         )}
 
@@ -333,7 +309,7 @@ export function PageSettings(): React.JSX.Element {
             </Button>
           </Card></div>
             <div className="lg:col-span-2"></div>
-            <div className="lg:col-span-2"><Card icon={Timer} title="Pomodoro" description="Focus ekranındaki Pomodoro modunun süreleri. Faz bitince masaüstü bildirimi gelir.">
+            <div className="lg:col-span-2"><Card id="pomodoro" icon={Timer} title="Pomodoro" description="Focus ekranındaki Pomodoro modunun süreleri. Faz bitince masaüstü bildirimi gelir.">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {(
                 [
@@ -441,10 +417,11 @@ export function PageSettings(): React.JSX.Element {
             <div className="lg:col-span-2">
               <ProfileSecurity />
             </div>
-            <div className="lg:col-span-2"><Card icon={Keyboard} title="Klavye kısayolları" description="Her şey klavyeyle yapılabilir. İstediğin kısayolu tıklayıp yeni tuşlara basarak değiştir.">
+            <div className="lg:col-span-2"><Card id="keys" icon={Keyboard} title="Klavye kısayolları" description="Her şey klavyeyle yapılabilir. İstediğin kısayolu tıklayıp yeni tuşlara basarak değiştir.">
             <KeybindingsEditor status={shortcut} onChanged={reloadShortcut} />
           </Card></div>
             <div className="lg:col-span-2"><Card icon={Database} title="Veri" description="Tüm veriler bu bilgisayarda, SQLite içinde saklanır. Her gün otomatik yedek alınır (son 7).">
+              <DriveBackup />
           <div className="flex flex-wrap gap-2">
             <Button
               variant="outline"
@@ -533,5 +510,81 @@ export function PageSettings(): React.JSX.Element {
         </DialogContent>
       </Dialog>
     </Page>
+  )
+}
+function DriveBackup() {
+  const [status, setStatus] = React.useState<any>(null)
+  const [loading, setLoading] = React.useState(false)
+
+  const reload = () => {
+    window.api.drive.status().then(setStatus)
+  }
+
+  React.useEffect(() => {
+    reload()
+  }, [])
+
+  const handleConnect = async () => {
+    setLoading(true)
+    try {
+      const ok = await window.api.drive.connect()
+      if (ok) toast.success('Google Drive bağlandı')
+    } catch {
+      toast.error('Bağlantı başarısız')
+    }
+    setLoading(false)
+    reload()
+  }
+
+  const handleDisconnect = async () => {
+    await window.api.drive.disconnect()
+    toast.success('Drive bağlantısı kesildi')
+    reload()
+  }
+
+  const handleBackup = async () => {
+    setLoading(true)
+    try {
+      await window.api.drive.backupNow()
+      toast.success('Yedek başarıyla alındı')
+    } catch {
+      toast.error('Yedek alınamadı')
+    }
+    setLoading(false)
+    reload()
+  }
+
+  if (!status) return null
+
+  return (
+    <div className="mb-4 rounded-xl border px-4 py-3">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2 text-[13.5px] font-medium text-brand">
+          <Cloud className="size-4" /> Google Drive Bulut Yedekleme
+        </div>
+      </div>
+      <div className="text-[12px] text-muted-foreground mb-4">
+        Verileriniz Google hesabınıza şifrelenerek yedeklenir.
+        {status.connected && <div>Bağlı hesap: <span className="text-foreground">{status.email}</span></div>}
+        {status.connected && status.lastBackupAt && <div>Son yedek: {new Date(status.lastBackupAt).toLocaleString('tr-TR')}</div>}
+      </div>
+      
+      <div className="flex gap-2">
+        {!status.connected ? (
+          <Button onClick={handleConnect} disabled={loading} size="sm">
+            {loading ? 'Bağlanıyor...' : 'Google Drive\'a Bağlan'}
+          </Button>
+        ) : (
+          <>
+            <Button onClick={handleBackup} disabled={loading} size="sm" className="bg-brand hover:bg-brand/90 text-white">
+              {loading ? 'Yedekleniyor...' : 'Şimdi Yedekle'}
+            </Button>
+            <Button onClick={handleDisconnect} variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10">
+              Bağlantıyı Kes
+            </Button>
+          </>
+        )}
+      </div>
+    </div>
   )
 }

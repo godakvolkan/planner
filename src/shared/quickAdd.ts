@@ -39,7 +39,8 @@ const AREA_KEYWORDS: Record<string, string[]> = {
   'iş': ['toplantı', 'rapor', 'sunum', 'müşteri', 'proje'],
   'okul': ['ödev', 'odev', 'vize', 'final', 'ders', 'sınav', 'sinav', 'quiz', 'lab', 'hoca'],
   'yazılım': ['github', 'kod', 'api', 'react', 'nestjs', 'bug', 'readme', 'deploy', 'electron', 'commit', 'pr '],
-  'kişisel': ['market', 'spor', 'fatura', 'doktor', 'alışveriş', 'fatura']
+  'kariyer': ['staj', 'cv', 'özgeçmiş', 'mülakat', 'linkedin', 'başvuru'],
+  'kişisel': ['market', 'spor', 'fatura', 'doktor', 'alışveriş']
 }
 
 const trLower = (s: string): string => s.toLocaleLowerCase('tr-TR')

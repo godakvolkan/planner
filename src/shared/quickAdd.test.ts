@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { fold, parseQuickAdd } from './quickAdd'
 
-const AREAS = ['Okul', 'Yazılım', 'İş', 'Kişisel'].map((name) => ({ name }))
+const AREAS = ['Okul', 'Yazılım', 'İş', 'Kariyer', 'Kişisel'].map((name) => ({ name }))
 // 7 Ekim 2026 Çarşamba, 10:00
 const NOW = new Date(2026, 9, 7, 10, 0)
 const p = (s: string) => parseQuickAdd(s, AREAS, NOW)
@@ -59,7 +59,8 @@ describe('parseQuickAdd', () => {
   })
 
   it('anahtar kelimeden alan tahmini', () => {
-    expect(p('Veri yapıları ödevi').areaName).toBe('Üniversite')
+    expect(p('Veri yapıları ödevi').areaName).toBe('Okul')
+    expect(p('müşteri sunumu hazırla').areaName).toBe('İş')
     expect(p('GitHub README düzenle').areaName).toBe('Yazılım')
     expect(p('staj başvurusu').areaName).toBe('Kariyer')
     expect(p('kitap oku').areaName).toBeNull()
@@ -75,7 +76,7 @@ describe('parseQuickAdd', () => {
     expect(r.estimateMin).toBeNull()
     expect(r.scheduledTime).toBeNull()
     expect(r.title).toBe('2209 sonuç raporu')
-    expect(r.areaName).toBe('TÜBİTAK')
+    expect(r.areaName).toBe('İş')
   })
 })
 

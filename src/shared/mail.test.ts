@@ -51,13 +51,17 @@ describe('messageKey', () => {
 describe('searchSince', () => {
   const now = new Date('2026-10-09T12:00:00Z')
   const days = (d: Date): number => Math.round((now.getTime() - d.getTime()) / 86_400_000)
-  it('ilk eşitlemede son 7 gün (eski e-postalar Inbox’ı doldurmaz)', () => {
-    expect(days(searchSince('all', null, now))).toBe(7)
-    expect(days(searchSince('flagged', null, now))).toBe(7)
+  const connected = '2026-10-09T11:00:00Z'
+  it('hesap bağlanmadan 7 gün öncesinden geriye gitmez (eski e-postalar Inbox’ı doldurmaz)', () => {
+    expect(days(searchSince('all', null, connected, now))).toBe(7)
+    expect(days(searchSince('flagged', null, connected, now))).toBe(7)
+    // ikinci eşitlemede de yıldızlı eski e-postalar gelmez
+    expect(days(searchSince('flagged', '2026-10-09T11:50:00Z', connected, now))).toBe(7)
   })
-  it('sonra: yıldızlılarda 30 gün, diğerlerinde son eşitlemeden 1 gün önce', () => {
-    expect(days(searchSince('flagged', '2026-10-09T11:50:00Z', now))).toBe(30)
-    expect(days(searchSince('unread', '2026-10-09T11:50:00Z', now))).toBe(1)
-    expect(days(searchSince('all', '2026-08-01T00:00:00Z', now))).toBe(30)
+  it('uzun süredir bağlı hesap: yıldızlılarda 30 gün, diğerlerinde son eşitlemeden 1 gün önce', () => {
+    const old = '2026-01-01T00:00:00Z'
+    expect(days(searchSince('flagged', '2026-10-09T11:50:00Z', old, now))).toBe(30)
+    expect(days(searchSince('unread', '2026-10-09T11:50:00Z', old, now))).toBe(1)
+    expect(days(searchSince('all', '2026-08-01T00:00:00Z', old, now))).toBe(30)
   })
 })

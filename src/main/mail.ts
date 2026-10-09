@@ -161,7 +161,7 @@ async function fetchEnvelopes(row: AccountRow): Promise<{ envelopes: MailEnvelop
     const lock = await c.getMailboxLock(row.mailbox, { readOnly: true })
     try {
       const uidValidity = c.mailbox ? String(c.mailbox.uidValidity) : '0'
-      const since = searchSince(row.rule, row.last_synced_at)
+      const since = searchSince(row.rule, row.last_synced_at, row.created_at)
       const query = { since, ...(row.rule === 'flagged' ? { flagged: true } : row.rule === 'unread' ? { seen: false } : {}) }
       const found = await c.search(query, { uid: true })
       const uids = (found || []).sort((a, b) => a - b).slice(-MAX_PER_SYNC)

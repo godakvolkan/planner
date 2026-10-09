@@ -200,6 +200,12 @@ export interface RecurrenceInput {
 export type ThemeMode = 'dark' | 'light' | 'system'
 export type NotifySound = 'default' | 'chime' | 'soft' | 'none'
 
+export interface DriveStatus {
+  connected: boolean
+  email?: string
+  lastBackupAt?: string
+}
+
 export interface Settings {
   userName: string
   theme: ThemeMode
@@ -497,6 +503,12 @@ export interface IElectronAPI {
     openFolder(): Promise<void>
     /** Seçilen yedeğe döner (önce mevcut verinin yedeğini alır) */
     restore(path: string): Promise<void>
+  }
+  drive: {
+    status(): Promise<DriveStatus>
+    connect(): Promise<boolean>
+    disconnect(): Promise<void>
+    backupNow(): Promise<boolean>
   }
   files: {
     /** Dosya veya klasör seçtirir; iptal edilirse null */

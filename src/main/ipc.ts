@@ -34,6 +34,7 @@ import { broadcastAuth, signIn, signInWithEmail, signInWithGoogle, signOut } fro
 import { googleSetup } from './google'
 import { semanticSearch } from './ai/semantic'
 import { addMailAccount, listMailAccounts, removeMailAccount, syncMail, updateMailAccount } from './mail'
+import { getDriveStatus, connectDrive, disconnectDrive, backupToDrive } from './repos/drive'
 
 /** Ayar değişince işletim sistemi tarafını da uygula */
 function applySettings(patch: Partial<Settings>): Settings {
@@ -120,7 +121,6 @@ const handlers: Record<string, (...args: never[]) => unknown> = {
   'settings:update': applySettings,
   'capacity:list': listCapacity,
   'capacity:set': setCapacity,
-  'emails:sync': syncMail,
   'capacity:setOverride': setCapacityOverride,
   'capacity:override': getCapacityOverride,
   'sessions:active': activeSession,
@@ -134,6 +134,10 @@ const handlers: Record<string, (...args: never[]) => unknown> = {
   'backups:now': backupNow,
   'backups:openFolder': openBackupFolder,
   'backups:restore': restoreBackup,
+  'drive:status': getDriveStatus,
+  'drive:connect': connectDrive,
+  'drive:disconnect': disconnectDrive,
+  'drive:backupNow': backupToDrive,
   'files:pick': pickPath,
   'ai:semanticSearch': semanticSearch,
   'mail:list': listMailAccounts,

@@ -65,6 +65,16 @@ Google girişi sistem tarayıcısında açılır (OAuth 2.0 + PKCE, 127.0.0.1 y�
 2. İndirdiğin JSON'u `google-oauth.json` adıyla uygulama veri klasörüne koy (giriş ekranında Google düğmesine basınca tam yolu gösterir; geliştirmede `%APPDATA%\control-center\`). Alternatif: `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` ortam değişkenleri.
 3. Şifreni unutursan: profilin e-postası Google hesabınla aynıysa Google ile gir, Ayarlar → Profil ve güvenlik'ten eski şifreyi bilmeden yenisini belirle.
 
+### E-posta → Inbox
+
+Ayarlar → Genel → **E-posta hesabı bağla**: Gmail, Outlook, Yandex, iCloud ya da herhangi bir IMAP sunucusu. Normal hesap şifresi değil, sağlayıcının verdiği **uygulama şifresi** kullanılır (pencerede adım adım anlatılır, ilgili sayfaya bağlantı vardır).
+
+- Hangi e-postalar görev olsun: **yıldızlılar** (önerilen), okunmamışlar ya da tümü. Görevlerin düşeceği alan seçilebilir.
+- Her 10 dakikada bir (ve "Şimdi kontrol et" ile) kontrol edilir; ilk bağlantıda ve sonrasında hesap bağlanmadan 7 gün öncesinden eski e-postalar alınmaz. Aynı e-posta iki kez görev olmaz.
+- Gelen kutusu salt okunur açılır, e-postalarına dokunulmaz. Gmail'den gelen görevde "Başla" e-postayı tarayıcıda açar.
+- Uygulama şifresi Windows şifrelemesiyle (Electron `safeStorage`) saklanır, arayüze geri gönderilmez. Her profil kendi hesaplarını bağlar.
+- Not: Microsoft kişisel Outlook.com hesaplarında uygulama parolasıyla IMAP'i kısıtlıyor; bağlantı reddedilebilir.
+
 ### Veri
 
 - Her şey bu bilgisayarda, **SQLite** içinde. Sunucu yok, bulut hesabı yok.

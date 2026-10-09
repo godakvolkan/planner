@@ -216,6 +216,13 @@ Kullanıcı geri bildirimi: tasarım düz beyaz ve kimliksizdi; Inbox, Ayarlar v
 - Profillerde `email` (küçük harf, benzersiz). `auth.loginEmail(e-posta | eski profillerde ad, şifre)`; hata mesajı hangisinin yanlış olduğunu söylemez, kayıtlı olmayan e-posta da aynı sürede yanıtlanır. `auth.create({ name, email, password, hint })` (nesne!). `auth.setEmail`, `auth.hint` (Şifremi unuttum).
 - Google: `src/main/google.ts` (sistem tarayıcısı + PKCE + 127.0.0.1 rastgele port, `state` kontrolü, `aud` doğrulaması, `email_verified` zorunlu). İstemci: `GOOGLE_CLIENT_ID` ya da `userData/google-oauth.json` / `resources/google-oauth.json`. `auth:google` yalnızca main'deki akışı tetikler; doğrulanmış e-postayla `loginWithVerifiedEmail` IPC'ye açık değildir. Google ile açılan oturumda (`viaGoogle`) şifre eski şifre sorulmadan değiştirilebilir (unutulan şifre kurtarma).
 
+## E-posta (IMAP) ve Antigravity kontrolü (Claude Code, 9 Ekim akşam)
+
+- E-posta: `src/main/mail.ts` (imapflow 1.7.8, sürüm sabit), `src/shared/mail.ts` (+ `mail.test.ts`), `components/settings/MailAccounts.tsx`, migration `007_mail_accounts.sql` (`mail_accounts`, `mail_imports`; kullanılmayan `connected_accounts` düşürüldü). API `window.api.mail.*` — **`emails:*` kanalı yok, eklemeyin.** Eşitleme `session.ts`'te başlar; profil değişirse yazmaz.
+- Dış bağlantılar: `index.ts` → `setWindowOpenHandler` (http/https/mailto sistem tarayıcısında) + `will-navigate` engeli.
+- Antigravity değişiklikleri kontrol edildi: alanlar genelleştirildi (Okul/Yazılım/İş/Kariyer/Kişisel, `002` yalnızca yeni profilleri etkiler), Ayarlar sekmeli, açık tema varsayılan, bildirim sesi seçimi. Düzeltilenler: Kariyer anahtar kelimeleri silinmişti (geri eklendi), `quickAdd` testleri yarım güncellenmişti, Ayarlar'daki "Demo Modu" e-posta düğmesi ve yinelenen `emails:sync` kaldırıldı, `id="keys"` / `id="pomodoro"` bölüm işaretleri geri eklendi (palet ve Focus bağlantıları), bildirim sesi gizli hızlı ekleme penceresine gidiyordu.
+- **Kural:** eski migration dosyalarını değiştirmeyin; yeni değişiklik = yeni numaralı migration.
+
 ## İstekler (Antigravity → Claude Code)
 
 _API'de eksik bir şey olursa buraya yaz: ne lazım, hangi ekran için._

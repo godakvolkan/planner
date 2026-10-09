@@ -1,4 +1,4 @@
-import { app, BrowserWindow, globalShortcut } from 'electron'
+import { app, BrowserWindow, globalShortcut, shell } from 'electron'
 import { join } from 'path'
 import { registerIpc } from './ipc'
 import { TITLE_BAR, resourcePath } from './window'
@@ -49,6 +49,20 @@ function createWindow(): void {
       // Tepsideyken de Pomodoro / odak sayaçları zamanında bitsin
       backgroundThrottling: false
     }
+  })
+
+  // Bağlantılar (ör. "uygulama şifresi sayfasını aç") uygulama içinde değil sistem tarayıcısında açılır
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    try {
+      if (['https:', 'http:', 'mailto:'].includes(new URL(url).protocol)) void shell.openExternal(url)
+    } catch {
+      // geçersiz adres: açılmaz
+    }
+    return { action: 'deny' }
+  })
+  // Pencerenin kendisi başka bir sayfaya yönlendirilemesin
+  mainWindow.webContents.on('will-navigate', (e, url) => {
+    if (!url.startsWith('file:') && !(process.env.ELECTRON_RENDERER_URL && url.startsWith(process.env.ELECTRON_RENDERER_URL))) e.preventDefault()
   })
 
   // Uygulama "--hidden" ile (Windows açılışında) başlarsa pencere açılmadan tepside bekler

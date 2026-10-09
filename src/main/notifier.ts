@@ -46,7 +46,8 @@ export function notify(title: string, body: string, route = '/', taskId: number 
   n.show()
   
   if (silent && s.notifySound !== 'none') {
-    const win = BrowserWindow.getAllWindows()[0]
+    // Sesi ana pencere çalar (gizli hızlı ekleme penceresi değil)
+    const win = BrowserWindow.getAllWindows().find((w) => !w.isDestroyed() && !w.webContents.getURL().includes('#/quick'))
     if (win) win.webContents.send('notify:sound', s.notifySound)
   }
   return true

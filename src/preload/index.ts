@@ -124,6 +124,12 @@ const api: IElectronAPI = {
     openFolder: call('backups:openFolder'),
     restore: call('backups:restore')
   },
+  drive: {
+    status: call('drive:status'),
+    connect: call('drive:connect'),
+    disconnect: call('drive:disconnect'),
+    backupNow: call('drive:backupNow')
+  },
   files: {
     pick: call('files:pick')
   },

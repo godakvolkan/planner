@@ -117,11 +117,14 @@ export function taskFromMail(env: MailEnvelope, provider: MailProvider, areaId: 
   }
 }
 
-/** Bu kurala göre IMAP aramasının başlangıç tarihi: ilk eşitlemede son 7 gün, sonra son eşitlemeden 1 gün önce */
-export function searchSince(rule: MailRule, lastSyncedAt: string | null, now: Date = new Date()): Date {
+/**
+ * IMAP aramasının başlangıç tarihi. Hiçbir zaman hesap bağlanmadan 7 gün öncesinden geriye gitmez
+ * (eski e-postalar Inbox'ı doldurmasın). Yıldız sonradan da eklenebildiği için yıldızlılarda 30 güne kadar bakılır;
+ * diğer kurallarda son eşitlemeden 1 gün öncesi yeter.
+ */
+export function searchSince(rule: MailRule, lastSyncedAt: string | null, connectedAt: string, now: Date = new Date()): Date {
   const day = 86_400_000
-  if (!lastSyncedAt) return new Date(now.getTime() - 7 * day)
-  // Yıldız sonradan da eklenebilir: yıldızlılarda son 30 güne bak
-  if (rule === 'flagged') return new Date(now.getTime() - 30 * day)
-  return new Date(Math.max(new Date(lastSyncedAt).getTime() - day, now.getTime() - 30 * day))
+  const floor = new Date(connectedAt).getTime() - 7 * day
+  const window = rule === 'flagged' || !lastSyncedAt ? now.getTime() - 30 * day : new Date(lastSyncedAt).getTime() - day
+  return new Date(Math.max(floor, window, now.getTime() - 30 * day))
 }
