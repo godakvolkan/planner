@@ -528,9 +528,9 @@ function DriveBackup() {
     setLoading(true)
     try {
       const ok = await window.api.drive.connect()
-      if (ok) toast.success('Google Drive bağlandı')
+      if (ok) toast.success('Eşitleme klasörü ayarlandı')
     } catch {
-      toast.error('Bağlantı başarısız')
+      toast.error('Klasör seçilemedi')
     }
     setLoading(false)
     reload()
@@ -538,7 +538,7 @@ function DriveBackup() {
 
   const handleDisconnect = async () => {
     await window.api.drive.disconnect()
-    toast.success('Drive bağlantısı kesildi')
+    toast.success('Eşitleme bağlantısı kesildi')
     reload()
   }
 
@@ -560,13 +560,13 @@ function DriveBackup() {
     <div className="mb-4 rounded-xl border px-4 py-3">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2 text-[13.5px] font-medium text-brand">
-          <Cloud className="size-4" /> Google Drive Bulut Yedekleme
+          <Cloud className="size-4" /> Bulut / Yerel Eşitleme
         </div>
       </div>
       <div className="text-[12px] text-muted-foreground mb-4">
-        Verileriniz Google hesabınıza şifrelenerek yedeklenir.
-        {status.connected && <div>Bağlı hesap: <span className="text-foreground">{status.email}</span></div>}
-        {status.connected && status.lastBackupAt && <div>Son yedek: {new Date(status.lastBackupAt).toLocaleString('tr-TR')}</div>}
+        Google Drive, OneDrive veya Dropbox klasörünüzü seçin. Uygulama buraya şifrelenmiş yedeklerini otomatik bırakır, bulut hizmetiniz de dosyayı eşitler. (API şifresi gerektirmez!)
+        {status.connected && <div>Seçili Klasör: <span className="text-foreground break-all">{status.syncFolder}</span></div>}
+        {status.connected && status.lastBackupAt && <div>Son eşitleme: {new Date(status.lastBackupAt).toLocaleString('tr-TR')}</div>}
       </div>
       
       <div className="flex gap-2">

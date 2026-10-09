@@ -202,7 +202,7 @@ export type NotifySound = 'default' | 'chime' | 'soft' | 'none'
 
 export interface DriveStatus {
   connected: boolean
-  email?: string
+  syncFolder?: string
   lastBackupAt?: string
 }
 
